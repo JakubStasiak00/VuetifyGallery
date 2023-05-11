@@ -3,7 +3,7 @@
     <v-toolbar :elevation="4" class="v-theme--dark bg-indigo-lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Vuetify Gallery</v-toolbar-title>
+      <v-toolbar-title @click="debug">Vuetify Gallery</v-toolbar-title>
     </v-toolbar>
 
     <v-navigation-drawer v-model="drawer" temporary>
@@ -12,8 +12,10 @@
 
     <v-container>
       <v-row no-gutters>
-        <v-col v-for="n in 12">
-          <v-img v-for="image in images" :key="image.id" :src="image.url" class=""></v-img>
+        <v-col v-for="n in 100" :key="n" cols="2">
+          <v-card>
+            <v-img :src="images[n - 1]" aspect-ratio="1" class=""></v-img>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -26,15 +28,21 @@ import { computed, onBeforeMount, ref } from 'vue';
 const drawer = ref(false)
 const images = ref([])
 
+const debug = () => {
+  console.log(images.value)
+}
+
 const getImages = async () => {
-  fetch("https://jsonplaceholder.typicode.com/photos?_limit=100")
-  .then(response => response.json())
-  .then(res => {
-    images.value = res
-  })
-  .catch(err => {
-    console.log(err)
-  })
+  fetch("https://jsonplaceholder.typicode.com/photos?_limit=100", { timeout: 10000 })
+    .then(response => response.json())
+    .then(res => {
+      res.forEach(img => {
+        images.value.push(img.url)
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 onBeforeMount(() => {
