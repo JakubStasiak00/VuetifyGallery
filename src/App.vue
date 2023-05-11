@@ -11,10 +11,10 @@
     </v-navigation-drawer>
 
     <v-container>
-      <v-row no-gutters>
-        <v-col v-for="n in 100" :key="n" cols="2">
+      <v-row>
+        <v-col v-for="n in images.length" :key="n" cols="6" sm="4" md="2" xl="1">
           <v-card>
-            <v-img :src="images[n - 1]" aspect-ratio="1" class=""></v-img>
+            <v-img :src="images[n - 1]" aspect-ratio="1"></v-img>
           </v-card>
         </v-col>
       </v-row>
